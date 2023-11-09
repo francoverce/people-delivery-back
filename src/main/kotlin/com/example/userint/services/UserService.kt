@@ -1,7 +1,10 @@
 package com.example.userint.services
 
+import com.example.userint.client.CoreClient
 import com.example.userint.config.ConfigCommon
 import com.example.userint.domain.entities.Users
+import com.example.userint.domain.model.EventUserData
+import com.example.userint.domain.model.Message
 import com.example.userint.domain.requests.PatchUserRequest
 import com.example.userint.domain.responses.OTPResponse
 import com.example.userint.repositories.clients.SengridApiClient
@@ -24,11 +27,14 @@ class UserService {
     @Autowired
     lateinit var configCommon: ConfigCommon
 
+    @Autowired
+    lateinit var coreClient: CoreClient
+
 
     @Transactional
     fun pathUser(userCode: UUID, patchUserRequest: PatchUserRequest): Users {
         userRepository.findByCode(userCode).let {
-            return userRepository.save(
+            val user = userRepository.save(
                 Users(
                     id = it.id,
                     code = it.code,
@@ -42,6 +48,21 @@ class UserService {
                     icon = it.icon
                 )
             )
+
+            coreClient.sendPostRequest(
+                EventUserData(
+                    exchange = "update_user",
+                    message = Message(
+                        idUsuario = user.id.toString(),
+                        nombreUsuario = "${user.name} ${user.lastName}",
+                        correoElectronico = user.email,
+                        numeroDeTelefono = user.phone,
+                        direccionDefecto = user.adress,
+                    )
+                )
+            )
+
+            return user
         }
     }
 

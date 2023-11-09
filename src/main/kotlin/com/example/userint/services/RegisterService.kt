@@ -1,7 +1,10 @@
 package com.example.userint.services
 
+import com.example.userint.client.CoreClient
 import com.example.userint.config.ConfigCommon
 import com.example.userint.domain.entities.Users
+import com.example.userint.domain.model.EventUserData
+import com.example.userint.domain.model.Message
 import com.example.userint.domain.responses.RegisterResponse
 import com.example.userint.exceptions.UserRegistedException
 import com.example.userint.jwt.JwtRequestStep1
@@ -19,9 +22,12 @@ class RegisterService {
     @Autowired
     lateinit var configCommon: ConfigCommon
 
+    @Autowired
+    lateinit var coreClient: CoreClient
+
     fun Register(jwtRequestStep1: JwtRequestStep1): RegisterResponse {
         if (registerRepository.findByEmail(jwtRequestStep1.email!!) == null) {
-            registerRepository.save(
+          val newUser = registerRepository.save(
                 Users(
                     password = configCommon.hashWith256(jwtRequestStep1.password).toString(),
                     userName = jwtRequestStep1.username,
@@ -34,6 +40,19 @@ class RegisterService {
                     favorites = emptyArray(),
                     adress = ""
                 )
+            )
+
+            coreClient.sendPostRequest(
+                EventUserData(
+                    exchange = "new_user",
+                    message = Message(
+                    idUsuario = newUser.id.toString(),
+                    nombreUsuario = "${newUser.name} ${newUser.lastName}",
+                    correoElectronico = newUser.email,
+                    numeroDeTelefono = newUser.phone,
+                    direccionDefecto = newUser.adress,
+                 )
+              )
             )
 
             return RegisterResponse(

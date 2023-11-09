@@ -1,15 +1,11 @@
 package com.example.userint.v1
 
-import com.example.userint.domain.entities.Claim
-import com.example.userint.domain.entities.Trips
 import com.example.userint.domain.requests.ClaimDTO
 import com.example.userint.domain.requests.ClaimReponse
-import com.example.userint.domain.requests.TripsDTO
 import com.example.userint.domain.requests.toClaimReponse
 import com.example.userint.jwt.ITokenExtractor
 import com.example.userint.jwt.JwtTokenUtil
 import com.example.userint.services.ClaimService
-import com.example.userint.services.TripService
 import io.swagger.annotations.Api
 import model.GenericUtils
 import org.springframework.beans.factory.annotation.Autowired
