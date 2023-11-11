@@ -1,18 +1,52 @@
 package com.example.userint.domain.model
 
-data class EventUserData (
+data class EventNewUserData (
     val exchange:String,
-    val message:Message
+    val message:MessageNewUser
 )
 
-data class Message (
-    val idUsuario: String,
-    val nombreUsuario: String?,
-    val correoElectronico: String?,
-    val numeroDeTelefono: String?,
-    val direccionDefecto: String?,
-    val operadoraTarjeta: String? = null,
-    val nroTarjeta: String? = null,
-    val vencimientoTarjeta: String? = null,
-    val codigoSeguridadTarjeta: String? = null,
+data class MessageNewUser (
+    val id: Long,
+    val telefono: String?,
+    val usuario: String?,
+    val nombre: String?,
+    val apellido: String,
+    val email: String,
+    val direccion: String,
+)
+
+
+
+data class EventUpdateUserData (
+    val exchange:String,
+    val message:MessageUpdateUser
+)
+data class MessageUpdateUser (
+    val id: Long,
+    val telefono: String?,
+    val usuario: String?,
+    val nombre: String?,
+    val apellido: String,
+    val email: String,
+    val direccion: String,
+)
+
+
+
+data class EventUpdateUserDataWithCard (
+    val exchange:String,
+    val message:MessageUpdateUserWithCard
+)
+data class MessageUpdateUserWithCard (
+    val id: Long,
+    val telefono: String?,
+    val usuario: String?,
+    val nombre: String?,
+    val apellido: String,
+    val email: String,
+    val direccion: String,
+    val operadoraTarjeta : String?,
+    val nroTarjeta :String?,
+    val vencimientoTarjeta :String?,
+    val codigoSeguridadTarjeta :String?
 )

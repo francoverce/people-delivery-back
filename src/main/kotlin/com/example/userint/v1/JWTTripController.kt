@@ -1,12 +1,13 @@
 package com.example.userint.v1
 
 import com.example.userint.domain.entities.Trips
-import com.example.userint.domain.requests.TripsDTO
+import com.example.userint.domain.requests.*
 import com.example.userint.jwt.ITokenExtractor
 import com.example.userint.jwt.JwtTokenUtil
 import com.example.userint.services.TripService
 import io.swagger.annotations.Api
 import model.GenericUtils
+import org.json.JSONObject
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.HttpStatus
@@ -63,6 +64,27 @@ class JWTTripController {
                 userCode = UUID.fromString(GenericUtils.getValueFromKeyValue(claims, "userCode").toString())
             }
         }
-        return ResponseEntity(tripService.cancelTrip(code,status, userCode!!), HttpStatus.CREATED)
+        return ResponseEntity(tripService.cancelTrip(code,status, userCode!!), HttpStatus.OK)
     }
+
+    @PostMapping("accepted/events")
+    fun acceptedTrip(
+        request: HttpServletRequest,
+        @RequestBody event: AcceptedTrip
+    ): ResponseEntity<Unit> {
+        return ResponseEntity(tripService.acceptedTrip(event), HttpStatus.OK)    }
+
+    @PostMapping("ongoing/events")
+    fun ongoinTrip(
+        request: HttpServletRequest,
+        @RequestBody event: OnGoingTrip
+    ): ResponseEntity<Unit> {
+        return ResponseEntity(tripService.ongoinTrip(event), HttpStatus.OK)    }
+
+    @PostMapping("ongoing/events")
+    fun closedTrip(
+        request: HttpServletRequest,
+        @RequestBody event: ClosedTrip
+    ): ResponseEntity<Unit> {
+        return ResponseEntity(tripService.closedTrip(event), HttpStatus.OK)    }
 }

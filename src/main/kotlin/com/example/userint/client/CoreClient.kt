@@ -1,9 +1,7 @@
 package com.example.userint.client
 
-import com.example.userint.domain.model.EventUserData
 import com.example.userint.domain.model.TokenReponse
 import com.example.userint.domain.model.TokenRequest
-import org.json.JSONObject
 import org.springframework.http.*
 import org.springframework.stereotype.Component
 import org.springframework.web.client.RestTemplate

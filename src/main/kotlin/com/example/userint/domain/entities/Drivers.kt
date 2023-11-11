@@ -1,10 +1,9 @@
 package com.example.userint.domain.entities
 
 import com.vladmihalcea.hibernate.type.array.StringArrayType
-import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import java.time.Instant
-import java.util.*
+import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
@@ -17,6 +16,9 @@ open class Drivers(
     @Column(name = "id", nullable = false)
     open var id: Long = 0,
 
+    @Column(name = "id_chofer", nullable = false)
+    open var idChofer: Long,
+
     @Column(name = "full_name")
     open var fullName: String? = null,
 
@@ -27,7 +29,7 @@ open class Drivers(
     open var patent: String,
 
     @Column(name = "date_come", nullable = false)
-    open var dateCome: String,
+    open var dateCome: LocalDateTime,
 
     @Column(name = "icon")
     open var icon: String?,
@@ -38,4 +40,4 @@ open class Drivers(
     @Column(name = "updated_at", nullable = false)
     open var updated_at: Instant = Instant.now(),
 
-)
+    )

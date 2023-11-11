@@ -4,16 +4,14 @@ import com.example.userint.client.CoreClient
 import com.example.userint.domain.entities.Cards
 import com.example.userint.domain.entities.Users
 import com.example.userint.domain.mappers.CardsMapper.toCardsReponse
-import com.example.userint.domain.model.EventUserData
-import com.example.userint.domain.model.Message
+import com.example.userint.domain.model.EventUpdateUserDataWithCard
+import com.example.userint.domain.model.MessageUpdateUserWithCard
 import com.example.userint.domain.requests.CardsDTO
 import com.example.userint.repositories.sql.CardsRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.time.Instant
 import java.util.*
-import javax.persistence.RollbackException
 
 @Service
 class CardsService  {
@@ -49,15 +47,17 @@ class CardsService  {
         )
     }
 
-    private fun createEventUserData(user: Users, card: Cards): EventUserData {
-        return EventUserData(
+    private fun createEventUserData(user: Users, card: Cards): EventUpdateUserDataWithCard {
+        return EventUpdateUserDataWithCard(
             exchange = "update_user",
-            message = Message(
-                idUsuario = user.id.toString(),
-                nombreUsuario = "${user.name} ${user.lastName}",
-                correoElectronico = user.email,
-                numeroDeTelefono = user.phone,
-                direccionDefecto = user.adress,
+            message = MessageUpdateUserWithCard(
+                id = user.id,
+                nombre = user.name,
+                apellido = user.lastName ?: "",
+                usuario = user.userName,
+                email = user.email,
+                telefono = user.phone,
+                direccion = user.adress ?: "",
                 operadoraTarjeta = card.cardOperator,
                 nroTarjeta = card.cardNumber,
                 vencimientoTarjeta = card.cardExpirationDate,

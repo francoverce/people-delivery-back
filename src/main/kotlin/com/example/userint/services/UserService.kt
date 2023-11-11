@@ -3,8 +3,8 @@ package com.example.userint.services
 import com.example.userint.client.CoreClient
 import com.example.userint.config.ConfigCommon
 import com.example.userint.domain.entities.Users
-import com.example.userint.domain.model.EventUserData
-import com.example.userint.domain.model.Message
+import com.example.userint.domain.model.EventUpdateUserData
+import com.example.userint.domain.model.MessageUpdateUser
 import com.example.userint.domain.requests.PatchUserRequest
 import com.example.userint.domain.responses.OTPResponse
 import com.example.userint.repositories.clients.SengridApiClient
@@ -38,6 +38,8 @@ class UserService {
                 Users(
                     id = it.id,
                     code = it.code,
+                    userName = patchUserRequest.userName ?: it.userName,
+                    phone = patchUserRequest.phone ?: it.phone,
                     name = patchUserRequest.name ?: it.name,
                     password = it.password,
                     email = it.email,
@@ -50,14 +52,16 @@ class UserService {
             )
 
             coreClient.sendPostRequest(
-                EventUserData(
+                EventUpdateUserData(
                     exchange = "update_user",
-                    message = Message(
-                        idUsuario = user.id.toString(),
-                        nombreUsuario = "${user.name} ${user.lastName}",
-                        correoElectronico = user.email,
-                        numeroDeTelefono = user.phone,
-                        direccionDefecto = user.adress,
+                    message = MessageUpdateUser(
+                        id = user.id,
+                        nombre = user.name,
+                        apellido = user.lastName ?: "",
+                        usuario = user.userName,
+                        email = user.email,
+                        telefono = user.phone,
+                        direccion = user.adress ?: "",
                     )
                 )
             )

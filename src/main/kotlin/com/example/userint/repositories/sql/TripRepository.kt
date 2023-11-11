@@ -9,7 +9,6 @@ import java.util.*
 
 @Repository
 interface TripRepository : JpaRepository<Trips, Long> {
-
     fun findByCodeAndUserId_Code(code: UUID, userCode: UUID): Optional<Trips>
 
 }
