@@ -58,3 +58,13 @@ tasks.withType<Test> {
 ktlint {
     disabledRules.set(setOf("no-wildcard-imports"))
 }
+
+tasks.withType<Jar> {
+    manifest {
+        attributes["main"] = "com.example.userint.UserIntApplication"
+    }
+}
+
+tasks.getByName<Jar>("jar") {
+    enabled = false
+}
